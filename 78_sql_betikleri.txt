@@ -1,0 +1,348 @@
+
+USE HavayoluOtomasyonDB;
+GO
+
+
+CREATE TABLE Airports (
+    AirportID INT IDENTITY(1,1) PRIMARY KEY,
+    AirportName NVARCHAR(150) NOT NULL,
+    City NVARCHAR(100) NOT NULL,
+    Country NVARCHAR(100) NOT NULL,
+    IATACode VARCHAR(3) UNIQUE NOT NULL,
+    TimeZone VARCHAR(50)
+);
+
+CREATE TABLE Models (
+    ModelID INT IDENTITY(1,1) PRIMARY KEY,
+    Manufacturer NVARCHAR(100) NOT NULL,
+    ModelName NVARCHAR(100) NOT NULL,
+    ICAO_TypeCode VARCHAR(10) NOT NULL,
+    Capacity_Economy INT NOT NULL,
+    Capacity_Business INT NOT NULL,
+    AvgSpeed DECIMAL(6,2)
+);
+
+CREATE TABLE Roles (
+    RoleID INT IDENTITY(1,1) PRIMARY KEY,
+    RoleName NVARCHAR(100) NOT NULL,
+    Department NVARCHAR(100),
+    SalaryGrade VARCHAR(10)
+);
+
+CREATE TABLE Fares (
+    FareID INT IDENTITY(1,1) PRIMARY KEY,
+    FareBasicCode VARCHAR(20) NOT NULL,
+    Refundable BIT NOT NULL, 
+    Changeable BIT NOT NULL,
+    CabinType VARCHAR(20) NOT NULL
+);
+
+CREATE TABLE Passengers (
+    PassengerID INT IDENTITY(1,1) PRIMARY KEY,
+    FirstName NVARCHAR(100) NOT NULL,
+    LastName NVARCHAR(100) NOT NULL,
+    Email VARCHAR(150) UNIQUE,
+    PassportNumber VARCHAR(20) UNIQUE NOT NULL,
+    Phone VARCHAR(20),
+    DateOfBirth DATE NOT NULL,
+    Gender VARCHAR(10),
+    Nationality NVARCHAR(50),
+    LoyaltyProgramID VARCHAR(50),
+    EmergencyContact VARCHAR(150),
+    SpecialNeeds NVARCHAR(255)
+);
+
+
+
+CREATE TABLE Aircrafts (
+    AircraftID INT IDENTITY(1,1) PRIMARY KEY,
+    ModelID INT FOREIGN KEY REFERENCES Models(ModelID),
+    ManufactureDate DATE,
+    TailNumber VARCHAR(20) UNIQUE NOT NULL,
+    Status VARCHAR(20) NOT NULL
+);
+
+CREATE TABLE Routes (
+    RoutesID INT IDENTITY(1,1) PRIMARY KEY,
+    DepartureAirportID INT FOREIGN KEY REFERENCES Airports(AirportID),
+    ArrivalAirportID INT FOREIGN KEY REFERENCES Airports(AirportID),
+    Distance DECIMAL(10,2),
+    EstimatedDuration INT
+);
+
+CREATE TABLE Staff (
+    StaffID INT IDENTITY(1,1) PRIMARY KEY,
+    FirstName NVARCHAR(100) NOT NULL,
+    LastName NVARCHAR(100) NOT NULL,
+    Email VARCHAR(150) UNIQUE,
+    Phone VARCHAR(20),
+    HireDate DATE NOT NULL,
+    RoleID INT FOREIGN KEY REFERENCES Roles(RoleID),
+    EmploymentStatus VARCHAR(20) 
+);
+
+CREATE TABLE Gates (
+    GateID INT IDENTITY(1,1) PRIMARY KEY,
+    AirportID INT FOREIGN KEY REFERENCES Airports(AirportID),
+    GateNumber VARCHAR(10) NOT NULL,
+    Terminal VARCHAR(50)
+);
+
+
+CREATE TABLE Flights (
+    FlightID INT IDENTITY(1,1) PRIMARY KEY,
+    RoutesID INT FOREIGN KEY REFERENCES Routes(RoutesID),
+    AircraftID INT FOREIGN KEY REFERENCES Aircrafts(AircraftID),
+    DepartureTime DATETIME NOT NULL,
+    ArrivalTime DATETIME NOT NULL,
+    FlightStatus VARCHAR(20)
+);
+
+CREATE TABLE TechnicalCertifications (
+    CertificationID INT IDENTITY(1,1) PRIMARY KEY,
+    StaffID INT FOREIGN KEY REFERENCES Staff(StaffID),
+    ModelID INT FOREIGN KEY REFERENCES Models(ModelID),
+    LicenseType VARCHAR(50) NOT NULL,
+    ExpiryDate DATE NOT NULL
+);
+
+CREATE TABLE MaintenanceLogs (
+    LogID INT IDENTITY(1,1) PRIMARY KEY,
+    AircraftID INT FOREIGN KEY REFERENCES Aircrafts(AircraftID),
+    LeadEngineerID INT FOREIGN KEY REFERENCES Staff(StaffID),
+    MaintenanceType VARCHAR(50) NOT NULL,
+    Description NVARCHAR(MAX),
+    MaintenanceDate DATE NOT NULL
+);
+
+CREATE TABLE Bookings (
+    BookingID INT IDENTITY(1,1) PRIMARY KEY,
+    PNR_Code VARCHAR(6) UNIQUE NOT NULL,
+    BookingDate DATETIME DEFAULT GETDATE(),
+    TotalAmount DECIMAL(18,2) NOT NULL,
+    PaymentStatus VARCHAR(20) NOT NULL,
+    CreatedByStaff INT FOREIGN KEY REFERENCES Staff(StaffID) NULL
+);
+
+
+CREATE TABLE Tickets (
+    TicketID INT IDENTITY(1,1) PRIMARY KEY,
+    TicketNumber VARCHAR(20) UNIQUE NOT NULL,
+    FlightID INT FOREIGN KEY REFERENCES Flights(FlightID),
+    PassengerID INT FOREIGN KEY REFERENCES Passengers(PassengerID),
+    SeatNumber VARCHAR(5),
+    ClassType VARCHAR(20) NOT NULL,
+    BookingID INT FOREIGN KEY REFERENCES Bookings(BookingID),
+    FareID INT FOREIGN KEY REFERENCES Fares(FareID),
+    IsCheckedIn BIT DEFAULT 0,
+    BaggageAllowance INT 
+);
+
+CREATE TABLE Payments (
+    PaymentID INT IDENTITY(1,1) PRIMARY KEY,
+    BookingID INT FOREIGN KEY REFERENCES Bookings(BookingID),
+    PaymentMethod VARCHAR(50),
+    TransactionID VARCHAR(100) UNIQUE,
+    Amount DECIMAL(18,2) NOT NULL,
+    PaymentDate DATETIME DEFAULT GETDATE()
+);
+
+CREATE TABLE Baggage (
+    BaggageID INT IDENTITY(1,1) PRIMARY KEY,
+    TicketID INT FOREIGN KEY REFERENCES Tickets(TicketID),
+    Weight DECIMAL(5,2) NOT NULL,
+    BaggageTagNumber VARCHAR(50) UNIQUE,
+    Status VARCHAR(20) 
+);
+
+CREATE TABLE FlightStatusHistory (
+    HistoryID INT IDENTITY(1,1) PRIMARY KEY,
+    FlightID INT FOREIGN KEY REFERENCES Flights(FlightID),
+    Status VARCHAR(20) NOT NULL,
+    Reason NVARCHAR(255),
+    UpdateTime DATETIME DEFAULT GETDATE()
+);
+
+CREATE TABLE FlightCrew (
+    FlightCrewID INT IDENTITY(1,1) PRIMARY KEY,
+    FlightID INT FOREIGN KEY REFERENCES Flights(FlightID),
+    StaffID INT FOREIGN KEY REFERENCES Staff(StaffID),
+    AssigmentRole VARCHAR(50) NOT NULL 
+);
+
+INSERT INTO Airports (AirportName, City, Country, IATACode, TimeZone) VALUES
+('İstanbul Havalimanı', 'İstanbul', 'Türkiye', 'IST', 'GMT+3'),
+('Sabiha Gökçen Havalimanı', 'İstanbul', 'Türkiye', 'SAW', 'GMT+3'),
+('Ankara Esenboğa Havalimanı', 'Ankara', 'Türkiye', 'ESB', 'GMT+3'),
+('İzmir Adnan Menderes Havalimanı', 'İzmir', 'Türkiye', 'ADB', 'GMT+3'),
+('Antalya Havalimanı', 'Antalya', 'Türkiye', 'AYT', 'GMT+3'),
+('London Heathrow Airport', 'Londra', 'İngiltere', 'LHR', 'GMT+0'),
+('Paris Charles de Gaulle Airport', 'Paris', 'Fransa', 'CDG', 'GMT+1'),
+('Frankfurt Airport', 'Frankfurt', 'Almanya', 'FRA', 'GMT+1'),
+('John F. Kennedy International Airport', 'New York', 'ABD', 'JFK', 'GMT-5'),
+('Dubai International Airport', 'Dubai', 'Birleşik Arap Emirlikleri', 'DXB', 'GMT+4'),
+('Tokyo Haneda Airport', 'Tokyo', 'Japonya', 'HND', 'GMT+9'),
+('Amsterdam Airport Schiphol', 'Amsterdam', 'Hollanda', 'AMS', 'GMT+1');
+
+INSERT INTO Models (Manufacturer, ModelName, ICAO_TypeCode, Capacity_Economy, Capacity_Business, AvgSpeed) VALUES
+('Boeing', '737-800', 'B738', 152, 12, 840.00),
+('Boeing', '737-MAX8', 'B38M', 162, 12, 842.00),
+('Airbus', 'A320-200', 'A320', 138, 12, 828.00),
+('Airbus', 'A321neo', 'A21N', 182, 12, 833.00),
+('Boeing', '777-300ER', 'B77W', 349, 49, 905.00),
+('Airbus', 'A350-900', 'A359', 297, 32, 903.00),
+('Boeing', '787-9 Dreamliner', 'B789', 270, 30, 890.00);
+
+INSERT INTO Roles (RoleName, Department, SalaryGrade) VALUES
+('Sorumlu Kaptan Pilot', 'Uçuş Operasyon', 'PL-1'),
+('İkinci Pilot ', 'Uçuş Operasyon', 'PL-2'),
+('Kabin Amiri ', 'Kabin Hizmetleri', 'KB-1'),
+('Kabin Memuru', 'Kabin Hizmetleri', 'KB-2'),
+('Uçak Bakım Mühendisi', 'Teknik ve Bakım', 'TK-1'),
+('Teknisyen', 'Teknik ve Bakım', 'TK-2'),
+('Yer Hizmetleri Memuru', 'Yer Operasyonları', 'YH-1'),
+('Bilet Satış Danışmanı', 'Ticari İşler', 'TS-1');
+
+
+INSERT INTO Fares (FareBasicCode, Refundable, Changeable, CabinType) VALUES
+('ECO_PROMO', 0, 0, 'Economy'),
+('ECO_SEMI_FLEX', 0, 1, 'Economy'),
+('ECO_FLEX', 1, 1, 'Economy'),
+('BUS_PROMO', 0, 1, 'Business'),
+('BUS_FLEX', 1, 1, 'Business');
+
+INSERT INTO Passengers (FirstName, LastName, Email, PassportNumber, Phone, DateOfBirth, Gender, Nationality, LoyaltyProgramID, SpecialNeeds) VALUES
+('Nur', 'Gokcek', 'nur.gokcek@email.com', 'TR11223344', '05551112233', '2004-05-15', 'Kadın', 'T.C.', 'MILES-99A', NULL),
+('Ahmet', 'Demir', 'ahmet.demir@email.com', 'TR99887766', '05442223344', '1993-10-20', 'Erkek', 'T.C.', NULL, NULL),
+('Elena', 'Petrova', 'elena.p@email.com', 'RU55443322', '+79112233445', '1998-03-12', 'Kadın', 'Rusya', 'MILES-12B', NULL),
+('John', 'Smith', 'john.smith@email.com', 'US00112233', '+12025550143', '1985-07-25', 'Erkek', 'ABD', 'MILES-77C', 'Wheelchair'),
+('Mehmet', 'Kaya', 'mehmet.kaya@email.com', 'TR44556677', '05334445566', '1972-12-01', 'Erkek', 'T.C.', NULL, NULL),
+('Ayşe', 'Yıldız', 'ayse.yildiz@email.com', 'TR88776655', '05056667788', '2001-02-28', 'Kadın', 'T.C.', NULL, NULL),
+('Michael', 'Jordan', 'mjordan@email.com', 'US99998888', '+13125550199', '1963-02-17', 'Erkek', 'ABD', 'GOLD-23', NULL),
+('Fatma', 'Şahin', 'fatma.sahin@email.com', 'TR55661122', '05421119988', '1965-08-14', 'Kadın', 'T.C.', NULL, 'Nut Allergy'),
+('David', 'Beckham', 'david.b@email.com', 'UK77777777', '+442079460192', '1975-05-02', 'Erkek', 'İngiltere', 'MILES-07B', NULL),
+('Can', 'Öztürk', 'can.ozturk@email.com', 'TR33221144', '05327778899', '1990-11-30', 'Erkek', 'T.C.', NULL, NULL);
+
+
+INSERT INTO Aircrafts (ModelID, ManufactureDate, TailNumber, Status) VALUES
+(1, '2016-05-10', 'TC-JYA', 'Active'),
+(1, '2017-08-15', 'TC-JYB', 'Active'),
+(2, '2019-03-20', 'TC-LCA', 'Active'),
+(3, '2015-11-02', 'TC-JJU', 'Maintenance'),
+(4, '2021-06-24', 'TC-LSA', 'Active'),
+(5, '2014-02-18', 'TC-JNN', 'Active'),
+(6, '2022-10-01', 'TC-LGA', 'Active'),
+(7, '2020-01-15', 'TC-LLA', 'Active');
+
+
+INSERT INTO Routes (DepartureAirportID, ArrivalAirportID, Distance, EstimatedDuration) VALUES
+(1, 6, 2500.00, 240),  
+(6, 1, 2500.00, 230),  
+(1, 9, 8000.00, 610), 
+(9, 1, 8000.00, 580),  
+(1, 3, 350.00, 60),   
+(3, 1, 350.00, 60),   
+(2, 4, 330.00, 55),   
+(4, 2, 330.00, 55),   
+(1, 10, 3000.00, 260),
+(1, 5, 500.00, 75);   
+
+
+INSERT INTO Staff (FirstName, LastName, Email, Phone, HireDate, RoleID, EmploymentStatus) VALUES
+('Gökhan', 'Kaptan', 'gokhan.k@airline.com', '05331110001', '2010-01-10', 1, 'Active'),
+('Kemal', 'Yılmaz', 'kemal.y@airline.com', '05331110002', '2015-06-01', 1, 'Active'),
+('Murat', 'Aydın', 'murat.a@airline.com', '05441110003', '2018-03-15', 2, 'Active'),
+('Mert', 'Gökcek', 'mert.g@airline.com', '05551110004', '2019-11-20', 2, 'Active'),
+('Zeynep', 'Kaya', 'zeynep.k@airline.com', '05322220001', '2012-04-12', 3, 'Active'),
+('Aslı', 'Çetin', 'asli.c@airline.com', '05322220002', '2016-08-05', 4, 'Active'),
+('Burak', 'Şen', 'burak.s@airline.com', '05432220003', '2017-09-14', 4, 'Active'),
+('Merve', 'Güneş', 'merve.g@airline.com', '05052220004', '2020-02-01', 4, 'Active'),
+('Hakan', 'Teknik', 'hakan.t@airline.com', '05333330001', '2008-05-20', 5, 'Active'),
+('Uğur', 'Usta', 'ugur.u@airline.com', '05443330002', '2014-10-10', 6, 'Active');
+
+
+INSERT INTO Gates (AirportID, GateNumber, Terminal) VALUES
+(1, 'A-01', 'Terminal Main'),
+(1, 'A-02', 'Terminal Main'),
+(1, 'B-12', 'Terminal Main'),
+(2, '201A', 'Terminal İç Hatlar'),
+(2, '202B', 'Terminal Dış Hatlar'),
+(3, '10', 'Terminal 1'),
+(6, 'T2-A', 'Terminal 2');
+
+
+INSERT INTO Flights (RoutesID, AircraftID, DepartureTime, ArrivalTime, FlightStatus) VALUES
+(1, 5, '2026-06-15 08:00:00', '2026-06-15 12:00:00', 'Scheduled'),
+(2, 5, '2026-06-15 14:00:00', '2026-06-15 17:50:00', 'Scheduled'),
+(3, 6, '2026-06-16 11:30:00', '2026-06-16 21:40:00', 'Scheduled'),
+(4, 6, '2026-06-17 23:55:00', '2026-06-18 09:35:00', 'Scheduled'),
+(5, 1, '2026-06-15 07:00:00', '2026-06-15 08:00:00', 'Scheduled'),
+(6, 1, '2026-06-15 09:30:00', '2026-06-15 10:30:00', 'Scheduled'),
+(7, 3, '2026-06-15 18:45:00', '2026-06-15 19:40:00', 'Scheduled'),
+(9, 7, '2026-06-18 16:20:00', '2026-06-18 20:40:00', 'Scheduled'),
+(10, 2, '2026-06-20 06:00:00', '2026-06-20 07:15:00', 'Scheduled');
+
+
+INSERT INTO TechnicalCertifications (StaffID, ModelID, LicenseType, ExpiryDate) VALUES
+(9, 1, 'B1 Line Maintenance', '2028-12-31'),
+(9, 5, 'B1 Heavy Maintenance', '2027-06-30'),
+(9, 6, 'B1 Heavy Maintenance', '2029-01-15'),
+(10, 1, 'A Rating General', '2026-12-31'),
+(10, 3, 'A Rating General', '2027-09-22');
+
+
+INSERT INTO MaintenanceLogs (AircraftID, LeadEngineerID, MaintenanceType, Description, MaintenanceDate) VALUES
+(4, 9, 'Heavy Maintenance', 'C-Check bakımı yapıldı, motor filtreleri değiştirildi, iniş takımları test edildi.', '2026-05-10'),
+(1, 10, 'Routine Check', 'Uçuş öncesi standart A-Check bakımı yapıldı, hidrolikler tamamlandı.', '2026-05-20'),
+(3, 9, 'Engine Repair', 'Sol motor pallerinde mikro çatlak kontrolü yapıldı ve parça revize edildi.', '2026-05-22');
+
+
+INSERT INTO Bookings (PNR_Code, BookingDate, TotalAmount, PaymentStatus, CreatedByStaff) VALUES
+('XYZ123', '2026-05-10 14:22:00', 4500.00, 'Paid', NULL),   
+('ABC987', '2026-05-11 09:05:00', 12500.00, 'Paid', NULL),  
+('PNR444', '2026-05-12 16:40:00', 1250.00, 'Paid', 8),     
+('FLEX77', '2026-05-13 11:15:00', 6200.00, 'Paid', NULL),
+('PRM333', '2026-05-14 21:00:00', 950.00, 'Pending', 8),  
+('JFKVIP', '2026-05-15 13:00:00', 35000.00, 'Paid', NULL);
+
+
+INSERT INTO Tickets (TicketNumber, FlightID, PassengerID, SeatNumber, ClassType, BookingID, FareID, IsCheckedIn, BaggageAllowance) VALUES
+('TK-20260001', 1, 1, '04A', 'Economy', 1, 3, 1, 30),  
+('TK-20260002', 1, 2, '12F', 'Economy', 1, 2, 0, 20),  
+('TK-20260003', 3, 3, '10B', 'Economy', 2, 2, 0, 23),  
+('TK-20260004', 3, 4, '01A', 'Business', 2, 5, 1, 40),
+('TK-20260005', 5, 5, '18C', 'Economy', 3, 1, 0, 15),  
+('TK-20260006', 1, 6, '05C', 'Economy', 4, 3, 1, 30), 
+('TK-20260007', 3, 7, '02C', 'Business', 6, 5, 1, 40);
+
+INSERT INTO Payments (BookingID, PaymentMethod, TransactionID, Amount, PaymentDate) VALUES
+(1, 'CreditCard', 'TXN-998822', 4500.00, '2026-05-10 14:23:00'),
+(2, 'CreditCard', 'TXN-776611', 12500.00, '2026-05-11 09:06:00'),
+(3, 'Cash', 'TXN-CASH01', 1250.00, '2026-05-12 16:40:00'),
+(4, 'CreditCard', 'TXN-443322', 6200.00, '2026-05-13 11:16:00'),
+(6, 'CreditCard', 'TXN-VIP001', 35000.00, '2026-05-15 13:02:00');
+
+INSERT INTO Baggage (TicketID, Weight, BaggageTagNumber, Status) VALUES
+(1, 22.50, 'TAG-IST77881', 'Loaded'),  
+(1, 7.20, 'TAG-IST77882', 'Loaded'),   
+(3, 21.00, 'TAG-LHR99001', 'Checked'),
+(4, 32.00, 'TAG-JFK11221', 'Loaded'),  
+(6, 18.40, 'TAG-IST44551', 'Checked');
+
+
+INSERT INTO FlightStatusHistory (FlightID, Status, Reason, UpdateTime) VALUES
+(1, 'Scheduled', 'Tarifeli uçuş planı oluşturuldu.', '2026-05-10 00:00:00'),
+(3, 'Scheduled', 'Tarifeli uçuş planı oluşturuldu.', '2026-05-10 00:00:00'),
+(7, 'Scheduled', 'Tarifeli uçuş planı oluşturuldu.', '2026-05-10 00:00:00');
+
+
+INSERT INTO FlightCrew (FlightID, StaffID, AssigmentRole) VALUES
+(1, 1, 'Captain Pilot'),
+(1, 3, 'First Officer'),
+(1, 5, 'Cabin Amir'),
+(1, 6, 'Cabin Crew'),
+(1, 7, 'Cabin Crew'),
+(3, 2, 'Captain Pilot'),
+(3, 4, 'First Officer'),
+(3, 5, 'Cabin Amir'),
+(3, 8, 'Cabin Crew');
