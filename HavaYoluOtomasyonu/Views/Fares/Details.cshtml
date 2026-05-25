@@ -1,0 +1,42 @@
+﻿@model HavaYoluOtomasyonu.Models.Fare
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Fare</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.FareBasicCode)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.FareBasicCode)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Refundable)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Refundable)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Changeable)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Changeable)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.CabinType)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CabinType)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.FareId">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

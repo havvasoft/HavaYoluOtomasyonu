@@ -1,0 +1,65 @@
+﻿@model IEnumerable<HavaYoluOtomasyonu.Models.Model>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Manufacturer)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ModelName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IcaoTypeCode)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CapacityEconomy)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CapacityBusiness)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AvgSpeed)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Manufacturer)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ModelName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IcaoTypeCode)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CapacityEconomy)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CapacityBusiness)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AvgSpeed)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.ModelId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.ModelId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.ModelId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

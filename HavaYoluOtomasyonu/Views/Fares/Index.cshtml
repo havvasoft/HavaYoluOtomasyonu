@@ -1,0 +1,53 @@
+﻿@model IEnumerable<HavaYoluOtomasyonu.Models.Fare>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.FareBasicCode)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Refundable)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Changeable)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CabinType)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.FareBasicCode)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Refundable)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Changeable)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CabinType)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.FareId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.FareId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.FareId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
