@@ -1,0 +1,83 @@
+﻿@model IEnumerable<HavaYoluOtomasyonu.Models.Ticket>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.TicketNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SeatNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ClassType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsCheckedIn)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BaggageAllowance)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Booking)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Fare)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Flight)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Passenger)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.TicketNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SeatNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ClassType)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsCheckedIn)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BaggageAllowance)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Booking.BookingId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Fare.FareId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Flight.FlightId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Passenger.PassengerId)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.TicketId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.TicketId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.TicketId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

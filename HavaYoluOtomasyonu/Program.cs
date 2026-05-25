@@ -1,4 +1,9 @@
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddDbContext<HavaYoluOtomasyonu.Models.HavayoluOtomasyonDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection") ??
+    "Server=.;Database=HavayoluOtomasyonDB;Trusted_Connection=True;TrustServerCertificate=True;"));
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
