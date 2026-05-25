@@ -1,8 +1,98 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Ana Sayfa";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<style>
+    /* Arka plan görseli ve karartma efekti */
+    .hero-section {
+        background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://images.unsplash.com/photo-1436491865332-7a61a109cc05?q=80&w=2074&auto=format&fit=crop');
+        background-size: cover;
+        background-position: center;
+        height: 80vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: -17px;
+    }
+
+    /* Arama kutusu kart tasarımı */
+    .flight-search-card {
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 12px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        padding: 30px;
+        border-top: 5px solid #E20000; /* THY Kırmızısı */
+    }
+
+    .btn-thy {
+        background-color: #E20000;
+        color: white;
+        font-weight: bold;
+        transition: all 0.3s ease;
+    }
+
+    .btn-thy:hover {
+        background-color: #B30000;
+        color: white;
+        transform: translateY(-2px);
+    }
+</style>
+
+<div class="hero-section">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                
+                <div class="text-center text-white mb-4">
+                    <h1 class="display-4 fw-bold">Dünyayı Keşfetmeye Hazır Mısınız?</h1>
+                    <p class="lead">Yüzlerce destinasyon, tek bir tık uzağınızda.</p>
+                </div>
+
+                <div class="flight-search-card">
+                    <form action="/Flights" method="get">
+                        <div class="row g-3 align-items-end">
+                            
+                            <div class="col-md-3">
+                                <label class="form-label text-muted fw-bold">Nereden</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-white"><i class="fw-bold">🛫</i></span>
+                                    <input type="text" class="form-control" placeholder="Şehir veya Havalimanı">
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <label class="form-label text-muted fw-bold">Nereye</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-white"><i class="fw-bold">🛬</i></span>
+                                    <input type="text" class="form-control" placeholder="Şehir veya Havalimanı">
+                                </div>
+                            </div>
+
+                            <div class="col-md-2">
+                                <label class="form-label text-muted fw-bold">Gidiş</label>
+                                <input type="date" class="form-control">
+                            </div>
+
+                            <div class="col-md-2">
+                                <label class="form-label text-muted fw-bold">Yolcu</label>
+                                <select class="form-select">
+                                    <option>1 Yolcu</option>
+                                    <option>2 Yolcu</option>
+                                    <option>3+ Yolcu</option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-2">
+                                <button type="submit" class="btn btn-thy w-100 py-2">
+                                    UÇUŞ ARA
+                                </button>
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
 </div>

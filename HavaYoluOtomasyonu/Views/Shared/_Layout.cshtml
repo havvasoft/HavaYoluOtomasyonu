@@ -11,20 +11,127 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">HavaYoluOtomasyonu</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
+        <style>
+                    /* Mavi - Kırmızı - Beyaz Konsepti */
+                    .navbar-custom {
+                        background-color: #0A2342; /* Kurumsal Koyu Mavi */
+                        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+                    }
+
+                        .navbar-custom .navbar-brand {
+                            color: #FFFFFF;
+                            font-weight: 800;
+                            font-size: 1.5rem;
+                            letter-spacing: 1px;
+                        }
+
+                            .navbar-custom .navbar-brand span {
+                                color: #E20000; /* Vurgulu Kırmızı */
+                            }
+
+                        .navbar-custom .nav-link {
+                            color: #E0E0E0;
+                            font-weight: 500;
+                            margin-right: 15px;
+                            transition: color 0.3s ease;
+                        }
+
+                            .navbar-custom .nav-link:hover {
+                                color: #E20000; /* Üzerine gelince kırmızı olsun */
+                            }
+
+                    /* Giriş Butonu ve Açılır Menü Tasarımı */
+                    .login-dropdown .dropdown-toggle {
+                        background-color: #E20000;
+                        color: white;
+                        border-radius: 25px;
+                        padding: 8px 25px;
+                        font-weight: bold;
+                        border: none;
+                    }
+
+                        .login-dropdown .dropdown-toggle:hover {
+                            background-color: #B30000;
+                        }
+
+                    .dropdown-menu-custom {
+                        border-top: 4px solid #0A2342;
+                        border-radius: 8px;
+                    }
+
+                    .role-icon {
+                        color: #E20000;
+                        margin-right: 10px;
+                        font-weight: bold;
+                    }
+        </style>
+
+        <nav class="navbar navbar-expand-lg navbar-custom py-3">
+            <div class="container">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
+                    Aero<span>Sys</span>
+                </a>
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainMenu">
+                    <span class="navbar-toggler-icon" style="filter: invert(1);"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
+
+                <div class="collapse navbar-collapse" id="mainMenu">
+                    
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link" asp-controller="Home" asp-action="Index">Ana Sayfa</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            <a class="nav-link" asp-controller="Flights" asp-action="Index">Uçuşlar</a>
+                        </li>
+
+                        @if (User.IsInRole("YerHizmetleri") || User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Passengers" asp-action="Index">Yolcular</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Tickets" asp-action="Index">Bilet İşlemleri</a>
+                            </li>
+                        }
+
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Aircrafts" asp-action="Index">Filo Yönetimi</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Employees" asp-action="Index">Personel Yönetimi</a>
+                            </li>
+                        }
+                    </ul>
+
+                    <ul class="navbar-nav">
+                        <li class="nav-item dropdown login-dropdown">
+                            <a class="nav-link dropdown-toggle" href="/Home/Login" id="loginDropdown" role="button" data-bs-toggle="dropdown">
+                                👤 Sisteme Giriş
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-custom shadow">
+                                <li><a class="dropdown-item py-2" href="/Home/Login"><span class="role-icon">🧑‍💻</span> Müşteri Girişi</a></li>
+                                <li>
+                                    <a class="dropdown-item py-2" href="#">
+                                        <span class="role-icon">✈️</span> Uçuş Ekibi (Pilot/Kabin)
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item py-2" href="#">
+                                        <span class="role-icon">🏢</span> Yer Hizmetleri (Check-in)
+                                    </a>
+                                </li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <a class="dropdown-item py-2" href="#">
+                                        <span class="role-icon">⚙️</span> Sistem Yöneticisi (Admin)
+                                    </a>
+                                </li>
+                            </ul>
                         </li>
                     </ul>
                 </div>
