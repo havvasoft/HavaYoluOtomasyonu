@@ -1,59 +1,48 @@
 ﻿@model IEnumerable<HavaYoluOtomasyonu.Models.Flight>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Uçuşlar";
 }
 
-<h1>Index</h1>
+<div class="page-header">
+    <div>
+        <h1 class="h3">Uçuşlar</h1>
+        <p class="text-muted-small mb-0">Mevcut uçuşları inceleyin, düzenleyin veya yeni bir uçuş ekleyin.</p>
+    </div>
+    <a asp-action="Create" class="btn btn-primary btn-lg">Yeni Uçuş Ekle</a>
+</div>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.DepartureTime)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ArrivalTime)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FlightStatus)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Aircraft)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Routes)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
+<div class="card shadow-sm mb-4">
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-striped table-hover align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>Gidiş</th>
+                        <th>Varış</th>
+                        <th>Durum</th>
+                        <th>Uçak</th>
+                        <th>Rota</th>
+                        <th class="text-end">İşlemler</th>
+                    </tr>
+                </thead>
+                <tbody>
 @foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.DepartureTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ArrivalTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FlightStatus)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Aircraft.AircraftId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Routes.RoutesId)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.FlightId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.FlightId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.FlightId">Delete</a>
-            </td>
-        </tr>
+                    <tr>
+                        <td>@Html.DisplayFor(modelItem => item.DepartureTime)</td>
+                        <td>@Html.DisplayFor(modelItem => item.ArrivalTime)</td>
+                        <td>@Html.DisplayFor(modelItem => item.FlightStatus)</td>
+                        <td>@(item.Aircraft?.TailNumber ?? item.AircraftId.ToString())</td>
+                        <td>@(item.Routes != null ? (item.Routes.DepartureAirport?.City + " → " + item.Routes.ArrivalAirport?.City) : item.RoutesId.ToString())</td>
+                        <td class="table-actions text-end">
+                            <a asp-action="Details" asp-route-id="@item.FlightId" class="btn btn-outline-info btn-sm">Detay</a>
+                            <a asp-action="Edit" asp-route-id="@item.FlightId" class="btn btn-outline-primary btn-sm">Düzenle</a>
+                            <a asp-action="Delete" asp-route-id="@item.FlightId" class="btn btn-outline-danger btn-sm">Sil</a>
+                        </td>
+                    </tr>
 }
-    </tbody>
-</table>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

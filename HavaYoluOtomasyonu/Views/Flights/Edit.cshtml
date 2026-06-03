@@ -1,52 +1,65 @@
 ﻿@model HavaYoluOtomasyonu.Models.Flight
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Uçuş Düzenle";
 }
 
-<h1>Edit</h1>
-
-<h4>Flight</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="FlightId" />
-            <div class="form-group">
-                <label asp-for="RoutesId" class="control-label"></label>
-                <select asp-for="RoutesId" class="form-control" asp-items="ViewBag.RoutesId"></select>
-                <span asp-validation-for="RoutesId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="AircraftId" class="control-label"></label>
-                <select asp-for="AircraftId" class="form-control" asp-items="ViewBag.AircraftId"></select>
-                <span asp-validation-for="AircraftId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="DepartureTime" class="control-label"></label>
-                <input asp-for="DepartureTime" class="form-control" />
-                <span asp-validation-for="DepartureTime" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ArrivalTime" class="control-label"></label>
-                <input asp-for="ArrivalTime" class="form-control" />
-                <span asp-validation-for="ArrivalTime" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="FlightStatus" class="control-label"></label>
-                <input asp-for="FlightStatus" class="form-control" />
-                <span asp-validation-for="FlightStatus" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+<div class="page-header">
+    <div>
+        <h1 class="h3">Uçuşu Düzenle</h1>
+        <p class="text-muted-small mb-0">Seçili uçuşun bilgilerini güncelleyin.</p>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
+<div class="card shadow-sm mb-4">
+    <div class="card-body">
+        <h5 class="card-title mb-4">Uçuş Bilgileri</h5>
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+            <input type="hidden" asp-for="FlightId" />
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="RoutesId" class="form-label"></label>
+                        <select asp-for="RoutesId" class="form-control" asp-items="ViewBag.RoutesId"></select>
+                        <span asp-validation-for="RoutesId" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="AircraftId" class="form-label"></label>
+                        <select asp-for="AircraftId" class="form-control" asp-items="ViewBag.AircraftId"></select>
+                        <span asp-validation-for="AircraftId" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="DepartureTime" class="form-label"></label>
+                        <input asp-for="DepartureTime" class="form-control" />
+                        <span asp-validation-for="DepartureTime" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="ArrivalTime" class="form-label"></label>
+                        <input asp-for="ArrivalTime" class="form-control" />
+                        <span asp-validation-for="ArrivalTime" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="form-group">
+                        <label asp-for="FlightStatus" class="form-label"></label>
+                        <input asp-for="FlightStatus" class="form-control" />
+                        <span asp-validation-for="FlightStatus" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-4">
+                <button type="submit" class="btn btn-primary">Kaydet</button>
+                <a asp-action="Index" class="btn btn-outline-secondary ms-2">Geri Dön</a>
+            </div>
+        </form>
+    </div>
 </div>
 
 @section Scripts {

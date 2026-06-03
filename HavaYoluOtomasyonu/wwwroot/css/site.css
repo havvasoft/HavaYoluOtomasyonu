@@ -29,3 +29,64 @@ body {
 .form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
   text-align: start;
 }
+
+.page-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.page-header h1 {
+  margin-bottom: 0.25rem;
+}
+
+.card.shadow-sm {
+  border: 1px solid rgba(10, 35, 66, 0.08);
+  border-radius: 1rem;
+}
+
+.card-body {
+  background: #ffffff;
+}
+
+.table-actions .btn {
+  margin-right: 0.35rem;
+}
+
+.table-actions .btn:last-child {
+  margin-right: 0;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-group label {
+  font-weight: 600;
+}
+
+.form-control {
+  border-radius: 0.7rem;
+}
+
+.btn-primary,
+.btn-success,
+.btn-danger,
+.btn-outline-primary,
+.btn-outline-info,
+.btn-outline-secondary {
+  border-radius: 0.65rem;
+}
+
+.text-muted-small {
+  color: rgba(0, 0, 0, 0.65);
+}
+
+.card-footer {
+  background: transparent;
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+}

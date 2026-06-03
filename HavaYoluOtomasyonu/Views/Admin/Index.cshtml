@@ -1,0 +1,70 @@
+@model HavaYoluOtomasyonu.Models.AdminDashboardViewModel
+
+@{
+    ViewData["Title"] = "Admin Paneli";
+}
+
+<div class="page-header">
+    <div>
+        <h1 class="h3">Admin Paneli</h1>
+        <p class="text-muted-small mb-0">Sistem genelindeki uçuş, bilet ve yolcu verilerini buradan yönetebilirsiniz.</p>
+    </div>
+</div>
+
+<div class="row g-4 mb-4">
+    <div class="col-md-4">
+        <div class="card shadow-sm border-0 p-3 h-100">
+            <div class="card-body">
+                <h5 class="card-title">Toplam Uçuş</h5>
+                <p class="display-6 fw-bold">@Model.TotalFlights</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card shadow-sm border-0 p-3 h-100">
+            <div class="card-body">
+                <h5 class="card-title">Toplam Bilet</h5>
+                <p class="display-6 fw-bold">@Model.TotalTickets</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card shadow-sm border-0 p-3 h-100">
+            <div class="card-body">
+                <h5 class="card-title">Toplam Yolcu</h5>
+                <p class="display-6 fw-bold">@Model.TotalPassengers</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4 mb-4">
+    <div class="col-md-4">
+        <div class="card shadow-sm border-0 p-3 h-100">
+            <div class="card-body">
+                <h5 class="card-title">Rezervasyon</h5>
+                <p class="display-6 fw-bold">@Model.TotalBookings</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card shadow-sm border-0 p-3 h-100">
+            <div class="card-body">
+                <h5 class="card-title">Check-in Bekleyen</h5>
+                <p class="display-6 fw-bold">@Model.PendingCheckins</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+        <h5 class="card-title mb-4">Hızlı Erişim</h5>
+        <div class="d-flex flex-wrap gap-2">
+            <a asp-controller="Flights" asp-action="Index" class="btn btn-outline-primary">Uçuşlar</a>
+            <a asp-controller="Tickets" asp-action="Index" class="btn btn-outline-primary">Biletler</a>
+            <a asp-controller="Passengers" asp-action="Index" class="btn btn-outline-primary">Yolcular</a>
+            <a asp-controller="Bookings" asp-action="Index" class="btn btn-outline-primary">Rezervasyonlar</a>
+        </div>
+    </div>
+</div>

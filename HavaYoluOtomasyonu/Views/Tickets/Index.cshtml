@@ -1,83 +1,60 @@
 ﻿@model IEnumerable<HavaYoluOtomasyonu.Models.Ticket>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Bilet İşlemleri";
 }
 
-<h1>Index</h1>
+<div class="page-header">
+    <div>
+        <h1 class="h3">Bilet İşlemleri</h1>
+        <p class="text-muted-small mb-0">Tüm bilet kayıtlarını burada görüntüleyebilir, düzenleyebilir veya inceleyebilirsiniz.</p>
+    </div>
+    <a asp-action="Create" class="btn btn-success btn-lg">Yeni Bilet Oluştur</a>
+</div>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.TicketNumber)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.SeatNumber)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ClassType)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsCheckedIn)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.BaggageAllowance)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Booking)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Fare)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Flight)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Passenger)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.TicketNumber)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SeatNumber)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ClassType)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsCheckedIn)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.BaggageAllowance)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Booking.BookingId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Fare.FareId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Flight.FlightId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Passenger.PassengerId)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.TicketId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.TicketId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.TicketId">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<div class="card shadow-sm mb-4">
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-striped table-hover align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>Bilet No</th>
+                        <th>Yolcu</th>
+                        <th>Uçuş</th>
+                        <th>Koltuk</th>
+                        <th>Sınıf</th>
+                        <th>Check-in</th>
+                        <th class="text-end">İşlemler</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.TicketNumber</td>
+                            <td>@item.Passenger?.FirstName @item.Passenger?.LastName</td>
+                            <td>@item.Flight?.FlightId</td>
+                            <td>@item.SeatNumber</td>
+                            <td>@item.ClassType</td>
+                            <td>
+                                @if (item.IsCheckedIn == true)
+                                {
+                                    <span class="badge bg-success">Tamamlandı</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-warning text-dark">Beklemede</span>
+                                }
+                            </td>
+                            <td class="text-end">
+                                <a asp-action="Details" asp-route-id="@item.TicketId" class="btn btn-outline-info btn-sm">Detay</a>
+                                <a asp-action="Edit" asp-route-id="@item.TicketId" class="btn btn-outline-primary btn-sm">Düzenle</a>
+                                <a asp-action="Delete" asp-route-id="@item.TicketId" class="btn btn-outline-danger btn-sm">Sil</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

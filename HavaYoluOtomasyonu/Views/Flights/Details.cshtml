@@ -1,48 +1,38 @@
 ﻿@model HavaYoluOtomasyonu.Models.Flight
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Uçuş Detayı";
 }
 
-<h1>Details</h1>
-
-<div>
-    <h4>Flight</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DepartureTime)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DepartureTime)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ArrivalTime)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ArrivalTime)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.FlightStatus)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.FlightStatus)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Aircraft)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Aircraft.AircraftId)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Routes)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Routes.RoutesId)
-        </dd>
-    </dl>
+<div class="page-header">
+    <div>
+        <h1 class="h3">Uçuş Detayı</h1>
+        <p class="text-muted-small mb-0">Seçili uçuş hakkında detaylı bilgi görüntüleniyor.</p>
+    </div>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.FlightId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+
+<div class="card shadow-sm mb-4">
+    <div class="card-body">
+        <h5 class="card-title mb-4">Uçuş Bilgileri</h5>
+        <dl class="row">
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.DepartureTime)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.DepartureTime)</dd>
+
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.ArrivalTime)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.ArrivalTime)</dd>
+
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.FlightStatus)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.FlightStatus)</dd>
+
+            <dt class="col-sm-3">Uçak</dt>
+            <dd class="col-sm-9">@(Model.Aircraft?.TailNumber ?? Model.AircraftId.ToString())</dd>
+
+            <dt class="col-sm-3">Rota</dt>
+            <dd class="col-sm-9">@(Model.Routes != null ? (Model.Routes.DepartureAirport?.City + " → " + Model.Routes.ArrivalAirport?.City) : Model.RoutesId.ToString())</dd>
+        </dl>
+        <div class="mt-3">
+            <a asp-action="Edit" asp-route-id="@Model.FlightId" class="btn btn-primary">Düzenle</a>
+            <a asp-action="Index" class="btn btn-outline-secondary ms-2">Geri Dön</a>
+        </div>
+    </div>
 </div>

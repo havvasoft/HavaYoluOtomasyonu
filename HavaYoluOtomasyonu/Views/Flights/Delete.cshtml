@@ -1,51 +1,40 @@
 ﻿@model HavaYoluOtomasyonu.Models.Flight
 
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = "Uçuş Sil";
 }
 
-<h1>Delete</h1>
+<div class="page-header">
+    <div>
+        <h1 class="h3">Uçuşu Sil</h1>
+        <p class="text-muted-small mb-0">Bu uçuşu silmek istediğinize emin misiniz? İşlem geri alınamaz.</p>
+    </div>
+</div>
 
-<h3>Are you sure you want to delete this?</h3>
-<div>
-    <h4>Flight</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DepartureTime)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DepartureTime)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ArrivalTime)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ArrivalTime)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.FlightStatus)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.FlightStatus)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Aircraft)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Aircraft.AircraftId)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Routes)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Routes.RoutesId)
-        </dd>
-    </dl>
-    
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="FlightId" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
-    </form>
+<div class="card shadow-sm mb-4">
+    <div class="card-body">
+        <h5 class="card-title mb-4">Uçuş Bilgileri</h5>
+        <dl class="row">
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.DepartureTime)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.DepartureTime)</dd>
+
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.ArrivalTime)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.ArrivalTime)</dd>
+
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.FlightStatus)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.FlightStatus)</dd>
+
+            <dt class="col-sm-3">Uçak</dt>
+            <dd class="col-sm-9">@(Model.Aircraft?.TailNumber ?? Model.AircraftId.ToString())</dd>
+
+            <dt class="col-sm-3">Rota</dt>
+            <dd class="col-sm-9">@(Model.Routes != null ? (Model.Routes.DepartureAirport?.City + " → " + Model.Routes.ArrivalAirport?.City) : Model.RoutesId.ToString())</dd>
+        </dl>
+
+        <form asp-action="Delete" class="mt-4">
+            <input type="hidden" asp-for="FlightId" />
+            <button type="submit" class="btn btn-danger">Sil</button>
+            <a asp-action="Index" class="btn btn-outline-secondary ms-2">Geri Dön</a>
+        </form>
+    </div>
 </div>
