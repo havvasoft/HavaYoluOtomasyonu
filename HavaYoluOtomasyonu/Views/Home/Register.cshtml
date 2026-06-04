@@ -1,56 +1,98 @@
-@model HavaYoluOtomasyonu.Models.RegisterViewModel
 @{
-    ViewData["Title"] = "Kayıt Ol";
+    ViewData["Title"] = "Sisteme Kayıt Ol";
 }
 
-<h2>Kayıt Ol</h2>
-<form asp-action="Register" method="post">
-    <div class="row">
-        <div class="col-md-6">
-            <div class="mb-3">
-                <label asp-for="FirstName" class="form-label"></label>
-                <input asp-for="FirstName" class="form-control" />
-                <span asp-validation-for="FirstName" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="mb-3">
-                <label asp-for="LastName" class="form-label"></label>
-                <input asp-for="LastName" class="form-control" />
-                <span asp-validation-for="LastName" class="text-danger"></span>
-            </div>
-        </div>
-    </div>
-    <div class="mb-3">
-        <label asp-for="Email" class="form-label"></label>
-        <input asp-for="Email" class="form-control" />
-        <span asp-validation-for="Email" class="text-danger"></span>
-    </div>
-    <div class="mb-3">
-        <label asp-for="PassportNumber" class="form-label"></label>
-        <input asp-for="PassportNumber" class="form-control" />
-        <span asp-validation-for="PassportNumber" class="text-danger"></span>
-    </div>
-    <div class="row">
-        <div class="col-md-6">
-            <div class="mb-3">
-                <label asp-for="Phone" class="form-label"></label>
-                <input asp-for="Phone" class="form-control" />
-                <span asp-validation-for="Phone" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="mb-3">
-                <label asp-for="DateOfBirth" class="form-label"></label>
-                <input asp-for="DateOfBirth" class="form-control" type="date" />
-                <span asp-validation-for="DateOfBirth" class="text-danger"></span>
-            </div>
-        </div>
-    </div>
+<style>
+    .register-container {
+        min-height: 75vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #f4f6f9;
+        margin-top: 20px;
+    }
 
-    <button type="submit" class="btn btn-thy">Kayıt Ol ve Giriş Yap</button>
-</form>
+    .register-card {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+        overflow: hidden;
+        width: 100%;
+        max-width: 900px;
+    }
 
-@section Scripts{
-    <partial name="_ValidationScriptsPartial" />
-}
+    .register-sidebar {
+        background-color: #E20000; /* Kayıt ekranında kırmızıyı vurguluyoruz */
+        color: white;
+        padding: 50px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .register-form-area {
+        padding: 50px;
+    }
+
+    .btn-register {
+        background-color: #0A2342; /* Havacılık Mavisi */
+        color: white;
+        font-weight: bold;
+        border-radius: 25px;
+        padding: 12px;
+        letter-spacing: 1px;
+        transition: all 0.3s ease;
+    }
+
+        .btn-register:hover {
+            background-color: #06162a;
+            color: white;
+            transform: translateY(-2px);
+        }
+</style>
+
+<div class="register-container mb-5">
+    <div class="register-card row g-0">
+        
+        <div class="col-md-7 register-form-area">
+            <h3 class="fw-bold mb-4" style="color: #0A2342;">Yeni Yolcu Kaydı</h3>
+            
+            <form action="/Home/Register" method="post">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label text-muted fw-bold">Adınız</label>
+                        <input type="text" name="FirstName" class="form-control" required>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label text-muted fw-bold">Soyadınız</label>
+                        <input type="text" name="LastName" class="form-control" required>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label text-muted fw-bold">E-posta Adresiniz</label>
+                    <input type="email" name="Email" class="form-control" required>
+                </div>
+
+                <div class="mb-4">
+                    <label class="form-label text-muted fw-bold">Şifre Belirleyin</label>
+                    <input type="password" name="Password" class="form-control" required>
+                </div>
+
+                <button type="submit" class="btn btn-register w-100 mb-4">ÜCRETSİZ KAYIT OL</button>
+                
+                <div class="text-center">
+                    <span class="text-muted">Zaten hesabınız var mı?</span>
+                    <a href="/Home/Login" class="text-decoration-none fw-bold ms-1" style="color: #E20000;">Giriş Yapın</a>
+                </div>
+            </form>
+        </div>
+
+        <div class="col-md-5 register-sidebar text-center">
+            <h2 class="fw-bold mb-4">Aero<span style="color: #0A2342;">Sys</span></h2>
+            <p class="lead" style="font-size: 1.1rem;">Ayrıcalıklı uçuş deneyimi ve size özel kampanyalardan faydalanmak için hemen AeroSys ailesine katılın.</p>
+            <div class="mt-4" style="font-size: 4rem;">🌍</div>
+        </div>
+
+    </div>
+</div>

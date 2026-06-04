@@ -1,4 +1,4 @@
-﻿@model HavaYoluOtomasyonu.Models.Staff
+@model HavaYoluOtomasyonu.Models.Staff
 
 @{
     ViewData["Title"] = "Edit";
@@ -34,19 +34,49 @@
                 <span asp-validation-for="Phone" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="Password" class="control-label"></label>
+                <input asp-for="Password" class="form-control" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <label asp-for="HireDate" class="control-label"></label>
                 <input asp-for="HireDate" class="form-control" />
                 <span asp-validation-for="HireDate" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="RoleId" class="control-label"></label>
-                <select asp-for="RoleId" class="form-control" asp-items="ViewBag.RoleId"></select>
+                <input asp-for="RoleId" class="form-control" />
                 <span asp-validation-for="RoleId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="EmploymentStatus" class="control-label"></label>
                 <input asp-for="EmploymentStatus" class="form-control" />
                 <span asp-validation-for="EmploymentStatus" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Bookings" class="control-label"></label>
+                <input asp-for="Bookings" class="form-control" />
+                <span asp-validation-for="Bookings" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FlightCrews" class="control-label"></label>
+                <input asp-for="FlightCrews" class="form-control" />
+                <span asp-validation-for="FlightCrews" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MaintenanceLogs" class="control-label"></label>
+                <input asp-for="MaintenanceLogs" class="form-control" />
+                <span asp-validation-for="MaintenanceLogs" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Role" class="control-label"></label>
+                <input asp-for="Role" class="form-control" />
+                <span asp-validation-for="Role" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TechnicalCertifications" class="control-label"></label>
+                <input asp-for="TechnicalCertifications" class="form-control" />
+                <span asp-validation-for="TechnicalCertifications" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />

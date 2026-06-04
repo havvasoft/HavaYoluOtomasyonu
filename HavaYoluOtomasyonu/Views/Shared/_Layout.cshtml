@@ -40,15 +40,7 @@
                                 color: #E20000; /* Üzerine gelince kırmızı olsun */
                             }
 
-                    /* Giriş Butonu ve Açılır Menü Tasarımı */
-                    .login-dropdown .dropdown-toggle {
-                        background-color: #E20000;
-                        color: white;
-                        border-radius: 25px;
-                        padding: 8px 25px;
-                        font-weight: bold;
-                        border: none;
-                    }
+                 
 
                         .login-dropdown .dropdown-toggle:hover {
                             background-color: #B30000;
@@ -77,17 +69,24 @@
                 </button>
 
                 <div class="collapse navbar-collapse" id="mainMenu">
-                    @{ var role = Context.Session.GetString("Role") ?? string.Empty; var passengerName = Context.Session.GetString("PassengerName") ?? string.Empty; }
+                    @{
+                        var role = Context.Session.GetString("Role") ?? string.Empty;
+                        var passengerName = Context.Session.GetString("PassengerName") ?? string.Empty;
+                    }
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
                         <li class="nav-item">
                             <a class="nav-link" asp-controller="Home" asp-action="Index">Ana Sayfa</a>
                         </li>
+
                         <li class="nav-item">
                             <a class="nav-link" asp-controller="Flights" asp-action="Index">Uçuşlar</a>
                         </li>
+
                         <li class="nav-item">
                             <a class="nav-link" asp-controller="Airports" asp-action="Index">Havalimanları</a>
                         </li>
+
                         <li class="nav-item">
                             <a class="nav-link" asp-controller="Tickets" asp-action="Index">Biletler</a>
                         </li>
@@ -116,17 +115,8 @@
                     <ul class="navbar-nav">
                         @if (string.IsNullOrEmpty(role))
                         {
-                            <li class="nav-item dropdown login-dropdown">
-                                <a class="nav-link dropdown-toggle" href="/Home/Login" id="loginDropdown" role="button" data-bs-toggle="dropdown">
-                                    👤 Sisteme Giriş
-                                </a>
-                                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-custom shadow">
-                                    <li><a class="dropdown-item py-2" href="/Home/Login"><span class="role-icon">🧑‍💻</span> Müşteri Girişi</a></li>
-                                    <li><a class="dropdown-item py-2" href="/Home/Login"><span class="role-icon">✈️</span> Uçuş Ekibi</a></li>
-                                    <li><a class="dropdown-item py-2" href="/Home/Login"><span class="role-icon">🏢</span> Yer Hizmetleri</a></li>
-                                    <li><hr class="dropdown-divider"></li>
-                                    <li><a class="dropdown-item py-2" href="/Home/Login"><span class="role-icon">⚙️</span> Sistem Yöneticisi</a></li>
-                                </ul>
+                            <li class="nav-item">
+                                <a href="/Home/Login" class="btn btn-danger px-4 py-2" style="border-radius: 20px; font-weight: bold;">Giriş Yap</a>
                             </li>
                         }
                         else

@@ -78,14 +78,13 @@
 
             <form asp-action="Login" method="post">
                 <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
-
-                <div class="mb-4">
-                    <label asp-for="Role" class="form-label text-muted fw-bold"></label>
-                    <select asp-for="Role" class="form-select">
-                        <option value="Customer">Müşteri Girişi</option>
-                        <option value="Admin">Admin Girişi</option>
+                <div class="mb-3 text-start">
+                    <label class="form-label text-muted fw-bold">Giriş Türü Seçiniz</label>
+                    <select name="UserType" class="form-select border-start-0" required style="border-radius: 8px;">
+                        <option value="Admin">👑 Sistem Yöneticisi (Admin)</option>
+                        <option value="Staff">🏢 Personel (Yer Hizmetleri vb.)</option>
+                        <option value="Customer">🧑‍✈️ Yolcu (Müşteri)</option>
                     </select>
-                    <span asp-validation-for="Role" class="text-danger"></span>
                 </div>
 
                 <div class="mb-4">
@@ -98,14 +97,15 @@
                 </div>
 
                 <div class="mb-4">
-                    <small class="text-muted">Müşteri girişi için e-posta veya pasaport numaranızı kullanın. Admin için kullanıcı adı <strong>admin</strong> yazabilirsiniz.</small>
+                    <label class="form-label text-muted fw-bold">Şifreniz</label>
+                    <input type="password" name="Password" class="form-control border-start-0" placeholder="••••••••" required>
                 </div>
 
                 <button type="submit" class="btn btn-login w-100 mb-4">SİSTEME GİRİŞ YAP</button>
 
                 <div class="text-center">
                     <span class="text-muted">Henüz hesabınız yok mu?</span>
-                    <a href="#" class="text-decoration-none fw-bold ms-1" style="color: #0A2342;">Hemen Kayıt Olun</a>
+                    <a href="/Home/Register" class="text-decoration-none fw-bold ms-1" style="color: #0A2342;">Hemen Kayıt Olun</a>
                 </div>
             </form>
         </div>

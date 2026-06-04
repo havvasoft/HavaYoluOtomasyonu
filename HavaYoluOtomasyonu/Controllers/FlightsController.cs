@@ -1,11 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using HavaYoluOtomasyonu.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using HavaYoluOtomasyonu.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace HavaYoluOtomasyonu.Controllers
 {
@@ -21,13 +22,22 @@ namespace HavaYoluOtomasyonu.Controllers
         // GET: Flights
         public async Task<IActionResult> Index()
         {
-            var havayoluOtomasyonDbContext = _context.Flights.Include(f => f.Aircraft).Include(f => f.Routes);
+            // Include komutları ile bağlı olan alt tabloları da zorla çekiyoruz.
+            var havayoluOtomasyonDbContext = _context.Flights
+                .Include(f => f.Aircraft) // Uçak bilgilerini getir
+                .Include(f => f.Routes) // Rotaları getir
+                    .ThenInclude(r => r.DepartureAirport) // Rotanın içindeki Kalkış Havalimanını getir
+                .Include(f => f.Routes) // Rotaları getir
+                    .ThenInclude(r => r.ArrivalAirport); // Rotanın içindeki Varış Havalimanını getir
+
             return View(await havayoluOtomasyonDbContext.ToListAsync());
         }
+        [Authorize(Roles = "Admin")]
 
         // GET: Flights/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+
             if (id == null)
             {
                 return NotFound();
@@ -46,6 +56,7 @@ namespace HavaYoluOtomasyonu.Controllers
         }
 
         // GET: Flights/Create
+        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             ViewData["AircraftId"] = new SelectList(_context.Aircrafts, "AircraftId", "AircraftId");
@@ -56,6 +67,7 @@ namespace HavaYoluOtomasyonu.Controllers
         // POST: Flights/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create([Bind("FlightId,RoutesId,AircraftId,DepartureTime,ArrivalTime,FlightStatus")] Flight flight)
         {
             if (ModelState.IsValid)
@@ -70,6 +82,7 @@ namespace HavaYoluOtomasyonu.Controllers
         }
 
         // GET: Flights/Edit/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -90,6 +103,7 @@ namespace HavaYoluOtomasyonu.Controllers
         // POST: Flights/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int id, [Bind("FlightId,RoutesId,AircraftId,DepartureTime,ArrivalTime,FlightStatus")] Flight flight)
         {
             if (id != flight.FlightId)
@@ -123,6 +137,7 @@ namespace HavaYoluOtomasyonu.Controllers
         }
 
         // GET: Flights/Delete/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -145,6 +160,7 @@ namespace HavaYoluOtomasyonu.Controllers
         // POST: Flights/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var flight = await _context.Flights.FindAsync(id);

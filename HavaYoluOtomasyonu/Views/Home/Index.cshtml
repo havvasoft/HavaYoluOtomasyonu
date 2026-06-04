@@ -3,9 +3,8 @@
 }
 
 <style>
-    /* Arka plan görseli ve karartma efekti */
     .hero-section {
-        background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://images.unsplash.com/photo-1436491865332-7a61a109cc05?q=80&w=2074&auto=format&fit=crop');
+        background-image: linear-gradient(rgba(10, 35, 66, 0.7), rgba(10, 35, 66, 0.7)), url('https://images.unsplash.com/photo-1436491865332-7a61a109cc05?q=80&w=2074&auto=format&fit=crop');
         background-size: cover;
         background-position: center;
         height: 80vh;
@@ -15,13 +14,13 @@
         margin-top: -17px;
     }
 
-    /* Arama kutusu kart tasarımı */
     .flight-search-card {
         background: rgba(255, 255, 255, 0.95);
         border-radius: 12px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-        padding: 30px;
-        border-top: 5px solid #E20000; /* THY Kırmızısı */
+        box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+        padding: 35px;
+        border-top: 5px solid #E20000;
+        width: 100%;
     }
 
     .btn-thy {
@@ -29,62 +28,73 @@
         color: white;
         font-weight: bold;
         transition: all 0.3s ease;
+        height: 100%; 
     }
 
-    .btn-thy:hover {
-        background-color: #B30000;
-        color: white;
-        transform: translateY(-2px);
-    }
+        .btn-thy:hover {
+            background-color: #B30000;
+            color: white;
+            transform: translateY(-2px);
+        }
 </style>
 
 <div class="hero-section">
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-lg-10">
+            <div class="col-lg-11">
                 
-                <div class="text-center text-white mb-4">
+                <div class="text-center text-white mb-5">
                     <h1 class="display-4 fw-bold">Dünyayı Keşfetmeye Hazır Mısınız?</h1>
-                    <p class="lead">Yüzlerce destinasyon, tek bir tık uzağınızda.</p>
+                    <p class="lead">AeroSys ile yüzlerce destinasyon tek tık uzağınızda.</p>
                 </div>
 
                 <div class="flight-search-card">
                     <form action="/Flights" method="get">
-                        <div class="row g-3 align-items-end">
+                        <div class="row g-3">
                             
                             <div class="col-md-3">
                                 <label class="form-label text-muted fw-bold">Nereden</label>
                                 <div class="input-group">
-                                    <span class="input-group-text bg-white"><i class="fw-bold">🛫</i></span>
-                                    <input type="text" class="form-control" placeholder="Şehir veya Havalimanı">
+                                    <span class="input-group-text bg-white">🛫</span>
+                                    <select class="form-select border-start-0" name="neredenId" required>
+                                        <option value="">Şehir veya Havalimanı Seçin</option>
+                                        @if (ViewBag.Havalimanlari != null)
+                                        {
+                                            foreach (var airport in ViewBag.Havalimanlari)
+                                            {
+                                                <option value="@airport.AirportId">@airport.City - @airport.AirportName</option>
+                                            }
+                                        }
+                                    </select>
                                 </div>
                             </div>
 
                             <div class="col-md-3">
                                 <label class="form-label text-muted fw-bold">Nereye</label>
                                 <div class="input-group">
-                                    <span class="input-group-text bg-white"><i class="fw-bold">🛬</i></span>
-                                    <input type="text" class="form-control" placeholder="Şehir veya Havalimanı">
+                                    <span class="input-group-text bg-white">🛬</span>
+                                    <select class="form-select border-start-0" name="nereyeId" required>
+                                        <option value="">Şehir veya Havalimanı Seçin</option>
+                                        @if (ViewBag.Havalimanlari != null)
+                                        {
+                                            foreach (var airport in ViewBag.Havalimanlari)
+                                            {
+                                                <option value="@airport.AirportId">@airport.City - @airport.AirportName</option>
+                                            }
+                                        }
+                                    </select>
                                 </div>
                             </div>
 
-                            <div class="col-md-2">
-                                <label class="form-label text-muted fw-bold">Gidiş</label>
-                                <input type="date" class="form-control">
+                            <div class="col-md-3">
+                                <label class="form-label text-muted fw-bold">Gidiş Tarihi</label>
+                                <input type="date" class="form-control" required>
                             </div>
 
-                            <div class="col-md-2">
-                                <label class="form-label text-muted fw-bold">Yolcu</label>
-                                <select class="form-select">
-                                    <option>1 Yolcu</option>
-                                    <option>2 Yolcu</option>
-                                    <option>3+ Yolcu</option>
-                                </select>
-                            </div>
-
-                            <div class="col-md-2">
+                            <div class="col-md-3">
+                                <label class="form-label d-none d-md-block">&nbsp;</label>
                                 <button type="submit" class="btn btn-thy w-100 py-2">
-                                    UÇUŞ ARA
+                                    UÇUŞ ARA ✈️
                                 </button>
                             </div>
 
@@ -92,37 +102,6 @@
                     </form>
                 </div>
 
-                <div class="row mt-5 gy-4">
-                    <div class="col-md-4">
-                        <div class="card shadow-sm border-0">
-                            <div class="card-body">
-                                <h5 class="card-title">Uçuşları Gör</h5>
-                                <p class="card-text text-muted">Mevcut uçuşları görüntüleyin ve rotaları keşfedin.</p>
-                                <a class="btn btn-thy" asp-controller="Flights" asp-action="Index">Uçuş Listesi</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="card shadow-sm border-0">
-                            <div class="card-body">
-                                <h5 class="card-title">Müşteri Girişi</h5>
-                                <p class="card-text text-muted">Kendi biletlerinizi ve rezervasyon bilgilerinizi görüntülemek için giriş yapın.</p>
-                                <a class="btn btn-thy" asp-controller="Home" asp-action="Login">Giriş Yap</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="card shadow-sm border-0">
-                            <div class="card-body">
-                                <h5 class="card-title">Havalimanları</h5>
-                                <p class="card-text text-muted">Tüm havalimanlarını ve detaylarını keşfedin.</p>
-                                <a class="btn btn-thy" asp-controller="Airports" asp-action="Index">Havalimanları</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
             </div>
         </div>
     </div>
-</div>

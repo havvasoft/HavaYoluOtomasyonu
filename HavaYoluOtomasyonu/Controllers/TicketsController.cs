@@ -1,11 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using HavaYoluOtomasyonu.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using HavaYoluOtomasyonu.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace HavaYoluOtomasyonu.Controllers
 {
@@ -19,13 +21,42 @@ namespace HavaYoluOtomasyonu.Controllers
         }
 
         // GET: Tickets
+        // GET: Tickets
         public async Task<IActionResult> Index()
         {
-            var havayoluOtomasyonDbContext = _context.Tickets.Include(t => t.Booking).Include(t => t.Fare).Include(t => t.Flight).Include(t => t.Passenger);
-            return View(await havayoluOtomasyonDbContext.ToListAsync());
+            // Sisteme giren kişinin Rolünü ve ID'sini alıyoruz
+            var userRole = User.FindFirst(ClaimTypes.Role)?.Value;
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            // YENİ: Bilet sayfasında sergilemek için yaklaşan uçuşları çekiyoruz
+            ViewBag.YaklasanUcuslar = await _context.Flights
+                .Include(f => f.Routes).ThenInclude(r => r.DepartureAirport)
+                .Include(f => f.Routes).ThenInclude(r => r.ArrivalAirport)
+                .Where(f => f.DepartureTime > DateTime.Now)
+                .OrderBy(f => f.DepartureTime)
+                .Take(6)
+                .ToListAsync();
+
+            // Eğer giren kişi Admin veya Yer Hizmetleri ise TÜM bilet listesini getir
+            if (userRole == "Admin" || userRole == "YerHizmetleri")
+            {
+                return View(await _context.Tickets.Include(t => t.Passenger).Include(t => t.Flight).ToListAsync());
+            }
+            // Eğer giren kişi standart Müşteri ise, SADECE kendi biletlerini getir
+            else
+            {
+                var myTickets = await _context.Tickets
+                    .Include(t => t.Passenger)
+                    .Include(t => t.Flight)
+                    .Where(t => t.PassengerId.ToString() == userId)
+                    .ToListAsync();
+
+                return View(myTickets);
+            }
         }
 
         // GET: Tickets/Details/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -48,6 +79,7 @@ namespace HavaYoluOtomasyonu.Controllers
         }
 
         // GET: Tickets/Create
+        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             ViewData["BookingId"] = new SelectList(_context.Bookings, "BookingId", "BookingId");
@@ -62,6 +94,7 @@ namespace HavaYoluOtomasyonu.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create([Bind("TicketId,TicketNumber,FlightId,PassengerId,SeatNumber,ClassType,BookingId,FareId,IsCheckedIn,BaggageAllowance")] Ticket ticket)
         {
             if (ModelState.IsValid)
@@ -78,6 +111,7 @@ namespace HavaYoluOtomasyonu.Controllers
         }
 
         // GET: Tickets/Edit/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -97,9 +131,7 @@ namespace HavaYoluOtomasyonu.Controllers
             return View(ticket);
         }
 
-        // POST: Tickets/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("TicketId,TicketNumber,FlightId,PassengerId,SeatNumber,ClassType,BookingId,FareId,IsCheckedIn,BaggageAllowance")] Ticket ticket)
@@ -137,6 +169,7 @@ namespace HavaYoluOtomasyonu.Controllers
         }
 
         // GET: Tickets/Delete/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -157,7 +190,7 @@ namespace HavaYoluOtomasyonu.Controllers
 
             return View(ticket);
         }
-
+        [Authorize(Roles = "Admin")]
         // POST: Tickets/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]

@@ -15,6 +15,8 @@ public partial class Staff
 
     public string? Phone { get; set; }
 
+    public string? Password { get; set; }
+
     public DateOnly HireDate { get; set; }
 
     public int? RoleId { get; set; }

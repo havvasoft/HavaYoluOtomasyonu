@@ -7,7 +7,13 @@ builder.Services.AddDbContext<HavaYoluOtomasyonu.Models.HavayoluOtomasyonDbConte
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-
+// Sisteme Cookie (Çerez) ile giriş yapma özelliğini ekliyoruz
+builder.Services.AddAuthentication("AeroSysAuth").AddCookie("AeroSysAuth", options =>
+{
+    options.LoginPath = "/Home/Login"; // Giriş yapmayanları buraya yönlendir
+    options.Cookie.Name = "AeroSys_Giris_Karti";
+});
+builder.Services.AddSession();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -20,6 +26,8 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseRouting();
+app.UseAuthentication();
+app.UseSession();
 
 app.UseAuthorization();
 
